@@ -1,0 +1,27 @@
+Package: br
+Type: Package
+Title: Some tools for my personal use
+Description: This package collects some functions I created for myself to
+    facilitate certain tasks. I do not expect it to be very useful for anyone
+    else.
+Authors@R: person("Bart",
+                  "Rogiers",
+                  role = c("aut", "cre"),
+                  email = "rogiers.bart@gmail.com")
+Version: 0.0.0.9000
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    tibble,
+    dplyr,
+    purrr,
+    fs,
+    glue,
+    magick,
+    stringr,
+    googledrive,
+    tidyr,
+    here,
+    magrittr
+RoxygenNote: 7.1.1
