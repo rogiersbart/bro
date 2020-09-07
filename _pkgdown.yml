@@ -1,0 +1,17 @@
+destination: docs
+template:
+  params:
+    bootswatch: readable
+url: https://rogiersbart.github.io/br
+authors:
+  Bart Rogiers:
+    href: https://rogiersbart.github.io
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+  right:
+    - icon: fa-list-alt fa-lg
+      href: reference/index.html
+    - icon: fa-github fa-lg
+      href: https://github.com/rogiersbart/br

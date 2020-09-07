@@ -6,11 +6,7 @@
 #' @param max_size maximum number of pixels for image width and height, defaults
 #'                 to 4000
 #' @export
-#' @examples
-#' \dontrun{
-#' convert_gimme_album("path/to/folder")
-#' }
-convert_gimme_album <- function(path = getwd(), max_size = 4000) {
+gimme_download <- function(path = getwd(), max_size = 4000) {
 
   # go to album, and save html
 

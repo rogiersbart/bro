@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipe operator — %&gt;% • br</title>
+<title>Write a hugo hugrid items.toml file based on a google drive folder — hugrid_add_items • br</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,14 @@
 
 
 
-<meta property="og:title" content="Pipe operator — %&gt;%" />
-<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
+<meta property="og:title" content="Write a hugo hugrid items.toml file based on a google drive folder — hugrid_add_items" />
+<meta property="og:description" content="This function allows you to create an image gallery type of website, using
+the hugo hugrid theme, with minimal setup
+in a google drive folder. Files in the folder starting with the
+folder/project name are omitted. The rest is processed in order, and added to
+the items.toml file. Everything works by linking to google drive, so files
+are hosted there, but all files should hence be available through a shared
+link. Details for setup are provided below." />
 
 
 
@@ -111,18 +117,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipe operator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rogiersbart/br/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>pipe.Rd</code></div>
+    <h1>Write a hugo hugrid items.toml file based on a google drive folder</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rogiersbart/br/blob/master/R/hugrid.R'><code>R/hugrid.R</code></a></small>
+    <div class="hidden name"><code>hugrid_add_items.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>See <code>magrittr::%&gt;%</code> for details.</p>
+    <p>This function allows you to create an image gallery type of website, using
+the <a href='https://themes.gohugo.io/hugrid/'>hugo hugrid theme</a>, with minimal setup
+in a google drive folder. Files in the folder starting with the
+folder/project name are omitted. The rest is processed in order, and added to
+the items.toml file. Everything works by linking to google drive, so files
+are hosted there, but all files should hence be available through a shared
+link. Details for setup are provided below.</p>
     </div>
 
-    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
+    <pre class="usage"><span class='fu'>hugrid_add_items</span>(<span class='no'>drive_folder</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw pkg'>here</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/here/man/here.html'>here</a></span>(<span class='st'>"data/items.toml"</span>))</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>drive_folder</th>
+      <td><p>full path to google drive folder without trailing slash</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>path to the <code>items.toml</code> file to be created</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Every <strong>image file</strong> should start with a code, then a name, and finally a
+type, separated with underscores (<em>e.g.</em> <code>code_name_type.jpg</code>). Types can be
+<code>thumb</code>, for the thumbnail images on the main page grid, <code>image</code> for the
+image used for display when the thumbnail is clicked, and <code>url</code> for the file
+that is linked to when clicking the button that is foreseen in the theme.</p>
+<p>If other types are included, these are added as separate buttons, by
+appending an html &lt;a&gt;&lt;/a&gt; tag to the description (explained below). For the
+button text, the type is  used, but underscores are replaced by spaces.</p>
+<p>A <strong>csv file</strong> should be included as well, with a column <code>code</code> that links
+the rows with the image files, and columns <code>title</code> and <code>description</code>, which
+are displayed next to the <code>image</code> type file.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

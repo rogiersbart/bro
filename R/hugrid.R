@@ -1,3 +1,56 @@
+#' Initiate a new hugrid site
+#'
+#' @export
+hugrid_init <- function() {
+  blogdown::new_site(theme = "aerohub/hugrid",
+                     theme_example = TRUE,
+                     serve = FALSE)
+  Sys.sleep(1)
+  purrr::walk(
+    c("archetypes", "content", "public", "resources", "static",
+      "themes/hugrid/exampleSite"),
+    fs::dir_delete
+  )
+  project <- fs::path_file(getwd())
+  cat(glue::glue('
+# Site settings
+baseurl = "https://rogiersbart.github.io/{project}/"
+languageCode = "en-uk"
+title = "{project}"
+theme = "hugrid"
+# Enter your tracking code to enable Google Analytics
+googleAnalytics = "UA-XXXXXXXX-Y"
+
+contentdir = "content"
+datadir = "data"
+layoutdir = "layouts"
+publishdir = "docs"
+ignoreFiles = ["\\\\.Rmd$", "\\\\.Rmarkdown$", "_files$", "_cache$"]
+
+[params]
+    # Meta
+    title = "[{project}](https://rogiersbart.github.io/{project})"
+    subtitle = "[rogiersbart.github.io](https://rogiersbart.github.io)"
+    author = "Bart Rogiers [rogiersbart]"
+    description = ""
+    keywords = ""
+
+    # Body background color
+    bodybgcolor = "#ffffff"
+
+    # Preview container button text
+    buttontext = "Download source"
+
+    # Footer text
+    footertext = \'<center><p xmlns:dct="http://purl.org/dc/terms/" xmlns:cc="http://creativecommons.org/ns#" class="license-text">This work by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://rogiersbart.github.io/">Bart Rogiers</a> is licensed under <a rel="license" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0.</a></p></center><br>\'
+
+    # add extra-css
+    # custom_css = ["css/extra1.css", "css/extra2.css"]
+'), file = "config.toml")
+
+  invisible()
+}
+
 #' Write a hugo hugrid items.toml file based on a google drive folder
 #'
 #' This function allows you to create an image gallery type of website, using
@@ -12,7 +65,11 @@
 #' type, separated with underscores (*e.g.* `code_name_type.jpg`). Types can be
 #' `thumb`, for the thumbnail images on the main page grid, `image` for the
 #' image used for display when the thumbnail is clicked, and `url` for the file
-#' that is linked to when clicking the button.
+#' that is linked to when clicking the button that is foreseen in the theme.
+#'
+#' If other types are included, these are added as separate buttons, by
+#' appending an html <a></a> tag to the description (explained below). For the
+#' button text, the type is  used, but underscores are replaced by spaces.
 #'
 #' A **csv file** should be included as well, with a column `code` that links
 #' the rows with the image files, and columns `title` and `description`, which
@@ -20,15 +77,8 @@
 #'
 #' @param drive_folder full path to google drive folder without trailing slash
 #' @param path path to the `items.toml` file to be created
-#'
-#' @return NULL
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' write_hugrid_items("my/drive/folder")
-#' }
-write_hugrid_items <- function(
+hugrid_add_items <- function(
   drive_folder,
   path = here::here("data/items.toml")
 ) {
@@ -42,12 +92,12 @@ write_hugrid_items <- function(
     tidyr::separate(name, into = c("code", "title", "type", "extension"),
                     sep = "_|\\.") %>%
     dplyr::select(-extension) %>%
+    dplyr::mutate(type = type %>% stringr::str_replace_all("-", "_")) %>%
     tidyr::spread("type", "id") %>%
     dplyr::arrange(dplyr::desc(code))
   prefix <- "https://drive.google.com/uc?export=view&id="
   add_prefix <- function(url) {
-    if (is.na(url)) return("")
-    paste0(prefix, url)
+    ifelse(is.na(url), "", paste0(prefix, url))
   }
   csv_file <- tempfile()
   googledrive::drive_download(paste0("~/", drive_folder, "/", csv$name), csv_file)
@@ -55,6 +105,28 @@ write_hugrid_items <- function(
     dplyr::rename(filename_title = title) %>%
     dplyr::left_join(readr::read_csv(csv_file)) %>%
     tidyr::replace_na(list(title = "", description = ""))
+
+  # add links extra types
+
+  extras <- df2 %>%
+    dplyr::select(-matches("code")) %>%
+    dplyr::select(-matches("title")) %>%
+    dplyr::select(-matches("image")) %>%
+    dplyr::select(-matches("thumb")) %>%
+    dplyr::select(-matches("url")) %>%
+    dplyr::select(-matches("description"))
+  columns_to_add <- names(extras) %>% stringr::str_replace_all("_", " ")
+  for (i in 1:length(columns_to_add)) {
+    df2$description <- paste0(
+      df2$description,
+      ifelse(
+        is.na(extras[,i]),
+        "",
+        glue::glue("<br><a target='_blank' href='{add_prefix(extras[[i]])}'>{columns_to_add[i]}</a>")
+      )
+    )
+  }
+
   cat("", file = path)
   for (i in 1:nrow(df)) {
     cat("[[items]]\n", file = path, append = TRUE)
