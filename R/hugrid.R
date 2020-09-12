@@ -116,15 +116,17 @@ hugrid_add_items <- function(
     dplyr::select(-matches("url")) %>%
     dplyr::select(-matches("description"))
   columns_to_add <- names(extras) %>% stringr::str_replace_all("_", " ")
-  for (i in 1:length(columns_to_add)) {
-    df2$description <- paste0(
-      df2$description,
-      ifelse(
-        is.na(extras[,i]),
-        "",
-        glue::glue("<br><a target='_blank' href='{add_prefix(extras[[i]])}'>{columns_to_add[i]}</a>")
+  if (length(columns_to_add) > 0) {
+    for (i in 1:length(columns_to_add)) {
+      df2$description <- paste0(
+        df2$description,
+        ifelse(
+          is.na(extras[,i]),
+          "",
+          glue::glue("<br><a target='_blank' href='{add_prefix(extras[[i]])}'>{columns_to_add[i]}</a>")
+        )
       )
-    )
+    }
   }
 
   cat("", file = path)
