@@ -6,8 +6,11 @@
 #'
 #' @export
 path_fix <- function() {
-  readClipboard() %>%
-    gsub("\\\\", "/", .) %>%
+  path <- readClipboard() %>%
+    gsub("\\\\", "/", .)
+  path %>%
     writeClipboard()
+  rui::approve("Your path has forward slashes now:")
+  rui::inform("{.path {path}}")
   invisible()
 }

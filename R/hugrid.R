@@ -128,7 +128,7 @@ hugrid_add_items <- function(
       )
     }
   }
-
+  rui::begin("Writing {.path {path}} file")
   cat("", file = path)
   for (i in 1:nrow(df)) {
     cat("[[items]]\n", file = path, append = TRUE)
@@ -139,5 +139,6 @@ hugrid_add_items <- function(
     cat('description = "', df2$description[i], '"\n', file = path, append = TRUE)
     cat('url = "', add_prefix(df2$url[i]), '"\n', file = path, sep = "", append = TRUE)
   }
+  rui::succeed()
   invisible()
 }
