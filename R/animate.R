@@ -48,11 +48,11 @@ animate <- function(dir, gif = "animation.gif", regexp = NULL, glob = NULL,
     progress = FALSE
   )
   rui::succeed()
-  rui::begin("Removing {.path .png} files")
   if (fs::path_ext(image_files[1]) == "jpg") {
+    rui::begin("Removing {.path .png} files")
     fs::file_delete(unique(png_files))
+    rui::succeed()
   }
-  rui::succeed()
   rui::inform("You can find the animation at:")
   rui::inform("{.path {fs::path(dir, gif)}}")
   invisible()

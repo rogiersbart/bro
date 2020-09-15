@@ -82,13 +82,15 @@ hugrid_add_items <- function(
   drive_folder,
   path = here::here("data/items.toml")
 ) {
+  googledrive::drive_auth(TRUE)
   project_name <- drive_folder %>% fs::path_file()
   df <- googledrive::drive_ls(paste0("~/", drive_folder, "/")) %>%
     dplyr::select(name, id)
   csv <- df %>%
     dplyr::filter(name %>% stringr::str_detect(".csv$"))
   df <- df %>%
-    dplyr::filter(name %>% stringr::str_detect("^espresso", TRUE)) %>%
+    dplyr::filter(name %>% stringr::str_detect(glue::glue("^{project_name}"), TRUE)) %>%
+    dplyr::filter(!name %>% fs::path_ext() %in% c("zip", "7z")) %>%
     tidyr::separate(name, into = c("code", "title", "type", "extension"),
                     sep = "_|\\.") %>%
     dplyr::select(-extension) %>%
@@ -103,7 +105,7 @@ hugrid_add_items <- function(
   googledrive::drive_download(paste0("~/", drive_folder, "/", csv$name), csv_file)
   df2 <- df %>%
     dplyr::rename(filename_title = title) %>%
-    dplyr::left_join(readr::read_csv(csv_file)) %>%
+    dplyr::left_join(readr::read_csv(csv_file, col_types = "ccc")) %>%
     tidyr::replace_na(list(title = "", description = ""))
 
   # add links extra types
