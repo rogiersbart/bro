@@ -27,7 +27,8 @@ Imports:
     here,
     magrittr,
     rui (>= 0.0.0.9000),
-    gifski
+    gifski,
+    yaml
 URL: https://github.com/rogiersbart/br
 BugReports: https://github.com/rogiersbart/br/issues
 Roxygen: list(markdown = TRUE)

@@ -86,12 +86,12 @@ hugrid_add_items <- function(
   project_name <- drive_folder %>% fs::path_file()
   df <- googledrive::drive_ls(paste0("~/", drive_folder, "/")) %>%
     dplyr::select(name, id)
-  csv <- df %>%
-    dplyr::filter(name %>% stringr::str_detect(".csv$"))
+  yml <- df %>%
+    dplyr::filter(name %>% stringr::str_detect(".yml$"))
   df <- df %>%
     dplyr::filter(name %>% stringr::str_detect(glue::glue("^{project_name}"), TRUE)) %>%
     dplyr::filter(!name %>% fs::path_ext() %in% c("zip", "7z")) %>%
-    tidyr::separate(name, into = c("code", "title", "type", "extension"),
+    tidyr::separate(name, into = c("code", "type", "extension"),
                     sep = "_|\\.") %>%
     dplyr::select(-extension) %>%
     dplyr::mutate(type = type %>% stringr::str_replace_all("-", "_")) %>%
@@ -101,22 +101,23 @@ hugrid_add_items <- function(
   add_prefix <- function(url) {
     ifelse(is.na(url), "", paste0(prefix, url))
   }
-  csv_file <- tempfile()
-  googledrive::drive_download(paste0("~/", drive_folder, "/", csv$name), csv_file)
+  yml_file <- tempfile()
+  googledrive::drive_download(paste0("~/", drive_folder, "/", yml$name), yml_file)
+  yml_contents <- yaml::read_yaml(yml_file) %>%
+    unlist() %>%
+    tibble::enframe() %>%
+    dplyr::mutate(id = cumsum(name == "code")) %>%
+    tidyr::spread(name, value) %>%
+    dplyr::select(-id)
   df2 <- df %>%
-    dplyr::rename(filename_title = title) %>%
-    dplyr::left_join(readr::read_csv(csv_file, col_types = "ccc")) %>%
+    dplyr::left_join(yml_contents) %>%
     tidyr::replace_na(list(title = "", description = ""))
 
   # add links extra types
 
   extras <- df2 %>%
-    dplyr::select(-matches("code")) %>%
-    dplyr::select(-matches("title")) %>%
-    dplyr::select(-matches("image")) %>%
-    dplyr::select(-matches("thumb")) %>%
-    dplyr::select(-matches("url")) %>%
-    dplyr::select(-matches("description"))
+    dplyr::select(-any_of(c("code", "title", "image", "thumb", "url",
+                            "description", "omit")))
   columns_to_add <- names(extras) %>% stringr::str_replace_all("_", " ")
   if (length(columns_to_add) > 0) {
     for (i in 1:length(columns_to_add)) {
