@@ -39,7 +39,7 @@ ignoreFiles = ["\\\\.Rmd$", "\\\\.Rmarkdown$", "_files$", "_cache$"]
     bodybgcolor = "#ffffff"
 
     # Preview container button text
-    buttontext = "Download source"
+    buttontext = "Source"
 
     # Footer text
     footertext = \'<center><p xmlns:dct="http://purl.org/dc/terms/" xmlns:cc="http://creativecommons.org/ns#" class="license-text">This work by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://rogiersbart.github.io/">Bart Rogiers</a> is licensed under <a rel="license" href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0.</a></p></center><br>\'
@@ -47,6 +47,12 @@ ignoreFiles = ["\\\\.Rmd$", "\\\\.Rmarkdown$", "_files$", "_cache$"]
     # add extra-css
     # custom_css = ["css/extra1.css", "css/extra2.css"]
 '), file = "config.toml")
+
+  default_css <- "themes/hugrid/static/css/default.css"
+  readLines(default_css) %>%
+    purrr::map_chr(~stringr::str_replace(., "family=Lato", "family=Fira+Code")) %>%
+    purrr::map_chr(~stringr::str_replace(., "'Lato'", "'Fira Code'")) %>%
+    writeLines(default_css)
 
   invisible()
 }
@@ -84,25 +90,30 @@ hugrid_add_items <- function(
 ) {
   googledrive::drive_auth(TRUE)
   project_name <- drive_folder %>% fs::path_file()
-  df <- googledrive::drive_ls(paste0("~/", drive_folder, "/")) %>%
+  df <- googledrive::drive_ls(paste0("~/", drive_folder, "/items/"),
+                              recursive = TRUE) %>%
     dplyr::select(name, id)
-  yml <- df %>%
-    dplyr::filter(name %>% stringr::str_detect(".yml$"))
   df <- df %>%
-    dplyr::filter(name %>% stringr::str_detect(glue::glue("^{project_name}"), TRUE)) %>%
-    dplyr::filter(!name %>% fs::path_ext() %in% c("zip", "7z")) %>%
     tidyr::separate(name, into = c("code", "type", "extension"),
                     sep = "_|\\.") %>%
     dplyr::select(-extension) %>%
     dplyr::mutate(type = type %>% stringr::str_replace_all("-", "_")) %>%
+    dplyr::mutate(type = ifelse(is.na(type), "folder", type)) %>%
     tidyr::spread("type", "id") %>%
-    dplyr::arrange(dplyr::desc(code))
-  prefix <- "https://drive.google.com/uc?export=view&id="
-  add_prefix <- function(url) {
+    dplyr::arrange(dplyr::desc(code)) %>%
+    dplyr::select(code, thumb, image, folder) %>%
+    dplyr::filter(! is.na(thumb))
+  add_prefix_file <- function(url) {
+    prefix <- "https://drive.google.com/uc?export=view&id="
     ifelse(is.na(url), "", paste0(prefix, url))
   }
+  add_prefix_folder <- function(url) {
+    prefix <- "https://drive.google.com/drive/folders/"
+    ifelse(is.na(url), "", paste0(prefix, url))
+  }
+
   yml_file <- tempfile()
-  googledrive::drive_download(paste0("~/", drive_folder, "/", yml$name), yml_file)
+  googledrive::drive_download(paste0("~/", drive_folder, "/items.yml"), yml_file)
   yml_contents <- yaml::read_yaml(yml_file) %>%
     unlist() %>%
     tibble::enframe() %>%
@@ -113,34 +124,36 @@ hugrid_add_items <- function(
     dplyr::left_join(yml_contents) %>%
     tidyr::replace_na(list(title = "", description = ""))
 
-  # add links extra types
-
-  extras <- df2 %>%
-    dplyr::select(-any_of(c("code", "title", "image", "thumb", "url",
-                            "description", "omit")))
-  columns_to_add <- names(extras) %>% stringr::str_replace_all("_", " ")
-  if (length(columns_to_add) > 0) {
-    for (i in 1:length(columns_to_add)) {
-      df2$description <- paste0(
-        df2$description,
-        ifelse(
-          is.na(extras[,i]),
-          "",
-          glue::glue("<br><a target='_blank' href='{add_prefix(extras[[i]])}'>{columns_to_add[i]}</a>")
-        )
-      )
-    }
-  }
+  # # add links extra types
+  #
+  # extras <- df2 %>%
+  #   dplyr::select(-any_of(c("code", "title", "image", "thumb", "url",
+  #                           "description", "omit")))
+  # columns_to_add <- names(extras) %>% stringr::str_replace_all("_", " ")
+  # if (length(columns_to_add) > 0) {
+  #   for (i in 1:length(columns_to_add)) {
+  #     df2$description <- paste0(
+  #       df2$description,
+  #       ifelse(
+  #         is.na(extras[,i]),
+  #         "",
+  #         glue::glue("<br><a target='_blank' href='{add_prefix_folder(extras[[i]])}'>{columns_to_add[i]}</a>")
+  #       )
+  #     )
+  #   }
+  # }
   rui::begin("Writing {.path {path}} file")
   cat("", file = path)
   for (i in 1:nrow(df)) {
     cat("[[items]]\n", file = path, append = TRUE)
     cat('title = "', df2$title[i], '"\n', file = path, sep = "", append = TRUE)
     cat('alt = "', df2$title[i], '"\n', file = path, sep = "", append = TRUE)
-    cat('image = "', add_prefix(df2$image[i]), '"\n', file = path, sep = "", append = TRUE)
-    cat('thumb = "', add_prefix(df2$thumb[i]), '"\n', file = path, sep = "", append = TRUE)
+    cat('image = "', add_prefix_file(df2$image[i]), '"\n', file = path, sep = "", append = TRUE)
+    cat('thumb = "', add_prefix_file(df2$thumb[i]), '"\n', file = path, sep = "", append = TRUE)
     cat('description = "', df2$description[i], '"\n', file = path, append = TRUE)
-    cat('url = "', add_prefix(df2$url[i]), '"\n', file = path, sep = "", append = TRUE)
+    if (df2$title[i] != "About") {
+      cat('url = "', add_prefix_folder(df2$folder[i]), '"\n', file = path, sep = "", append = TRUE)
+    }
   }
   rui::succeed()
   invisible()
