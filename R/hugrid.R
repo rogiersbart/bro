@@ -52,6 +52,11 @@ ignoreFiles = ["\\\\.Rmd$", "\\\\.Rmarkdown$", "_files$", "_cache$"]
   readLines(default_css) %>%
     purrr::map_chr(~stringr::str_replace(., "family=Lato", "family=Fira+Code")) %>%
     purrr::map_chr(~stringr::str_replace(., "'Lato'", "'Fira Code'")) %>%
+    purrr::map_chr(~stringr::str_replace(
+      .,
+      "padding: 60px 30px 50px;",
+      "padding: 60px 30px 0px;"
+    )) %>%
     writeLines(default_css)
 
   invisible()
