@@ -12,7 +12,7 @@ animate(
   delay = 2,
   loop = TRUE,
   max_size = 1200,
-  time_last = 2
+  repeat_last = 2
 )
 }
 \description{

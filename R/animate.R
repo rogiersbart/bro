@@ -7,11 +7,11 @@
 #' @param delay
 #' @param loop
 #' @param max_size
-#' @param time_last
+#' @param repeat_last
 #' @export
 animate <- function(dir, gif = "animation.gif", regexp = NULL, glob = NULL,
                     delay = 2, loop = TRUE,
-                    max_size = 1200, time_last = 2) {
+                    max_size = 1200, repeat_last = 2) {
   image_files <- fs::dir_ls(dir, glob = glob, regexp = regexp)
   rui::approve("Found {length(image_files)} {.path .{fs::path_ext(image_files[1])}} images")
   if (fs::path_ext(image_files[1]) == "jpg") {
@@ -34,8 +34,8 @@ animate <- function(dir, gif = "animation.gif", regexp = NULL, glob = NULL,
     info$height <- round(info$height / original_max_size * max_size)
   }
   rui::succeed()
-  if (time_last != 1) {
-    png_files <- c(png_files, rep(png_files[length(png_files)], time_last))
+  if (repeat_last != 1) {
+    png_files <- c(png_files, rep(png_files[length(png_files)], repeat_last))
   }
   rui::begin("Combining frames")
   gifski::gifski(

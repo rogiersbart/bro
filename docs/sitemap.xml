@@ -1,24 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rogiersbart.github.io/br/index.html</loc>
+    <loc>https://rogiersbart.github.io/bro/404.html</loc>
   </url>
   <url>
-    <loc>https://rogiersbart.github.io/br/reference/gimme_download.html</loc>
+    <loc>https://rogiersbart.github.io/bro/authors.html</loc>
   </url>
   <url>
-    <loc>https://rogiersbart.github.io/br/reference/hugrid_add_items.html</loc>
+    <loc>https://rogiersbart.github.io/bro/index.html</loc>
   </url>
   <url>
-    <loc>https://rogiersbart.github.io/br/reference/hugrid_init.html</loc>
+    <loc>https://rogiersbart.github.io/bro/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://rogiersbart.github.io/br/reference/path_fix.html</loc>
+    <loc>https://rogiersbart.github.io/bro/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://rogiersbart.github.io/br/reference/pipe.html</loc>
+    <loc>https://rogiersbart.github.io/bro/reference/animate.html</loc>
   </url>
   <url>
-    <loc>https://rogiersbart.github.io/br/reference/setup_r_profile.html</loc>
+    <loc>https://rogiersbart.github.io/bro/reference/bash.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/convert_gimme_album.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/dev.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/dotfiles.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/edit.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/gallery_build.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/gallery_init.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/gallery_items.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/gallery_serve.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/gimme_download.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/hugrid_add_items.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/hugrid_init.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/path_fix.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/pomodoro.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/setup_r_environ.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/setup_r_profile.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/shortcuts.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/sync.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/toggle.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/write_gimme_album.html</loc>
+  </url>
+  <url>
+    <loc>https://rogiersbart.github.io/bro/reference/write_hugrid_items.html</loc>
   </url>
 </urlset>

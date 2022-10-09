@@ -1,20 +1,27 @@
-# br<img src="man/figures/logo.png" align="right" width="15%"/><br><small><font color="#333333">My personal R tools</font></small>
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# The {bro} R package<img src="man/figures/logo.png" align="right" width="25%"/><br><small><font color="#999">My personal R tools</font></small>
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![CRAN status](https://www.r-pkg.org/badges/version/br)](https://CRAN.R-project.org/package=br)
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/br.svg)](https://CRAN.R-project.org/package=bro)
 <!-- badges: end -->
 
-The {br} package collects some functions I created for myself to
-facilitate certain tasks. I do not expect it to be very useful for anyone
-else, but if you think this can help you out, be my guest!
-    
-## Installation
+The {[bro](https://rogiersbart.github.io/bro)} R package collects some
+functions I created for myself to facilitate certain tasks. I do not
+expect it to be very useful for anyone else, but if you think this can
+help you out, be my guest!
 
-You can install the latest version of {br} with any of the following:
+# Install
+
+You can install the latest version of
+{[bro](https://rogiersbart.github.io/bro)} with the following:
 
 ``` r
-pak::pkg_install("rogiersbart/br")
-renv::install("rogiersbart/br")
-remotes::install_github("rogiersbart/br")
+install.packages("pak")
+pak::pkg_install("rogiersbart/bro")
 ```

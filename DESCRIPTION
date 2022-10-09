@@ -1,4 +1,4 @@
-Package: br
+Package: bro
 Type: Package
 Title: My personal R tools
 Description: This package collects some functions I created for myself to
@@ -28,10 +28,17 @@ Imports:
     magrittr,
     rui (>= 0.0.0.9000),
     gifski,
-    yaml
-URL: https://github.com/rogiersbart/br
-BugReports: https://github.com/rogiersbart/br/issues
+    yaml,
+    ggplot2,
+    rsthemes (>= 0.3.1),
+    audio,
+    todor,
+    gert,
+    usethis
+URL: https://github.com/rogiersbart/bro
+BugReports: https://github.com/rogiersbart/bro/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 Remotes: 
-    rogiersbart/rui
+    rogiersbart/rui,
+    gadenbuie/rsthemes
