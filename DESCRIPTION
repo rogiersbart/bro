@@ -34,7 +34,8 @@ Imports:
     audio,
     todor,
     gert,
-    usethis
+    usethis,
+    rvest
 URL: https://github.com/rogiersbart/bro
 BugReports: https://github.com/rogiersbart/bro/issues
 Roxygen: list(markdown = TRUE)
