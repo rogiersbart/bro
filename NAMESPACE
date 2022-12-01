@@ -3,6 +3,7 @@
 export("%>%")
 export(animate)
 export(bash)
+export(broekx_download)
 export(dark)
 export(dev)
 export(drive_download)
