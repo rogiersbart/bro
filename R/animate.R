@@ -12,7 +12,7 @@
 animate <- function(dir, gif = "animation.gif", regexp = NULL, glob = NULL,
                     delay = 2, loop = TRUE,
                     max_size = 1200, repeat_last = 2) {
-  image_files <- fs::dir_ls(dir, glob = glob, regexp = regexp)
+  image_files <- fs::dir_ls(dir, glob = glob, regexp = regexp) |> sort()
   rui::approve("Found {length(image_files)} {.path .{fs::path_ext(image_files[1])}} images")
   if (fs::path_ext(image_files[1]) == "jpg") {
     rui::inform("Note that {.code gifski::gifski()} only works with {.path .png} files")
