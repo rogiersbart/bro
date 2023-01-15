@@ -12,8 +12,7 @@ setup_dotfiles <- function(scope = "user") {
       ".minttyrc",
       ".nanorc",
       ".gitconfig",
-      ".gitignore",
-      ".ahk"
+      ".gitignore"
     ),
     setup_dotfile,
     scope = scope
@@ -38,36 +37,31 @@ setup_dotfile <- function(scope, name) {
   )
 }
 
-#' Setup utils
+#' Setup PowerToys
 #'
 #' @return Invisible NULL.
 #' @export
-setup_utils <- function() {
-  setup_util(
-    "https://www.autohotkey.com/download/ahk.zip",
-    "AutoHotkeyU64.exe"
-  )
-  setup_util(
-    "https://www.zhornsoftware.co.uk/caffeine/caffeine.zip",
-    "caffeine64.exe"
-  )
-  setup_util(
-    "https://dennisbabkin.com/php/download.php?go=ctm",
-    "Compact Tray Meter.exe"
+setup_powertoys <- function() {
+  purrr::walk(
+    c(
+      "FancyZones/custom-layouts.json",
+      "FancyZones/layout-hotkeys.json",
+      "FancyZones/settings.json",
+      "Keyboard Manager/default.json"
+    ),
+    setup_powertoys_json
   )
   invisible()
 }
-setup_util <- function(zip, file) {
-  path <- tempfile(fileext = ".zip")
-  if (grepl("php", zip)) {
-    download.file(zip, path, method = "curl", extra = "-L")
-  } else {
-    download.file(zip, path)
-  }
-  unzip(path, file, exdir = fs::path_home("bin"))
-  fs::file_delete(path)
+setup_powertoys_json <- function(json) {
+  path <- glue::glue("C:/Users/{Sys.getenv('USERNAME')}/AppData/Local/Microsoft/PowerToys/{json}")
+  json <- gsub(" ", "%20", json)
+  download.file(
+    glue::glue("https://raw.githubusercontent.com/rogiersbart/dotfiles/main/PowerToys/{json}"),
+    path,
+    quiet = TRUE
+  )
 }
-
 
 sitrep <- function() {
 
