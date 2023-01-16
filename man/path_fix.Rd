@@ -13,7 +13,7 @@ path_fix(path)
 The fixed path, invisibly.
 }
 \description{
-<kbd>Shift</kbd> + Right-click in the Windows file Explorer allows you to copy a file
+\if{html}{\out{<kbd>}}Shift\if{html}{\out{</kbd>}} + Right-click in the Windows file Explorer allows you to copy a file
 path, but it has backslashes. With this function, you get the forward
 slash version, so it can be used inside your R code.
 }

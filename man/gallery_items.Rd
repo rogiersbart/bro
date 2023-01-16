@@ -28,7 +28,7 @@ image used for display when the thumbnail is clicked, and \code{url} for the fil
 that is linked to when clicking the button that is foreseen in the theme.
 
 If other types are included, these are added as separate buttons, by
-appending an html <a></a> tag to the description (explained below). For the
+appending an html \if{html}{\out{<a>}}\if{html}{\out{</a>}} tag to the description (explained below). For the
 button text, the type is  used, but underscores are replaced by spaces.
 
 A \strong{csv file} should be included as well, with a column \code{code} that links
