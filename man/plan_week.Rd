@@ -4,7 +4,7 @@
 \alias{plan_week}
 \title{Plain text week planning}
 \usage{
-plan_week(file = NULL)
+plan_week(file = NULL, previous = NULL)
 }
 \arguments{
 \item{file}{File to write to, or "clipboard".}

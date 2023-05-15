@@ -37,7 +37,8 @@ plan_year <- function(
 #' @return The text, invisibly if written first to a file.
 #' @export
 plan_week <- function(
-  file = NULL
+  file = NULL,
+  previous = NULL
 ) {
   # TODO add week argument, which is current one by default to add dates?
   days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
@@ -49,9 +50,23 @@ plan_week <- function(
     "- [ ] teams\n",
     "- [ ] admin{ifelse(days == 'Friday', '', '\n')}"
   )
+  if (!is.null(previous)) {
+    prev <- readLines(previous)
+    prev <- prev[grepl("- [ ]", prev, fixed = TRUE)]
+    prev <- gsub("\\{", "\\{\\{", gsub("\\}", "\\}\\}", prev))
+    if (length(prev) > 0) {
+      txt <- glue::glue(
+        glue::glue_collapse(txt, sep = "\n"),
+        "\n\n## To do\n",
+        glue::glue_collapse(prev, sep = "\n")
+      )
+    }
+  }
   if (is.null(file)) return(txt)
   con <- file(file)
   writeLines(txt, con)
   close(con)
   invisible(txt)
 }
+
+

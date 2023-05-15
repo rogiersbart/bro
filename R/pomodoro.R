@@ -16,12 +16,12 @@ pomodoro <- function(minutes = 25) {
   # IDEA maybe combine multiple in single audio play call?
   start <- Sys.time()
   now <- Sys.time()
-  tick <- audio::load.wave("C:/Windows/Media/Windows Navigation Start.wav")
-  tick <- cbind(tick, tick * 0) # not sure why this is required
-  done <- audio::load.wave("C:/Windows/Media/Windows Notify Calendar.wav")
+  # tick <- audio::load.wave("C:/Windows/Media/Windows Navigation Start.wav")
+  # tick <- cbind(tick, tick * 0) # not sure why this is required
+  # done <- audio::load.wave("C:/Windows/Media/Windows Notify Calendar.wav")
   rui::begin("{minutes}:00")
   while (as.numeric(now - start, "mins") < minutes) {
-    audio::play(tick)
+    rui::speaker("C:/Windows/Media/Windows Navigation Start.wav")
     Sys.sleep(1)
     now <- Sys.time()
     passed <- as.numeric(now - start, "secs")
@@ -33,7 +33,7 @@ pomodoro <- function(minutes = 25) {
     rui::proceed("{mins}:{secs}")
     utils::setWindowTitle(title = paste0(mins, ":", secs, " ..."))
   }
-  audio::play(done)
+  rui::speaker("C:/Windows/Media/Windows Notify Calendar.wav")
   rui::succeed()
   invisible()
 }
