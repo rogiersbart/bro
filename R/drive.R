@@ -77,13 +77,20 @@ drive_gallery <- function(folder) {
     tidyr::replace_na(list(title = "", notes = "")) |>
     dplyr::arrange(dplyr::desc(code))
   df$notes <- glue::glue('{df$title}<br><br>{df$notes}<br><br><a href="{drive_folder(df$folder)}">Download page.</a>')
+  cache_image <- function(id) {
+    img <- googledrive::drive_get(id = id)
+    target <- glue::glue("images/{img$name}")
+    if (!fs::file_exists(target)) googledrive::drive_download(img, target)
+    img$name
+  }
   purrr::pwalk(
     df |>
       dplyr::select(image, title, notes),
     function(image, title, notes) {
+      img_name <- cache_image(image)
       cat(
         glue::glue(
-          '## {title} {{background-image="{drive_view(image)}" background-size=contain}}
+          '## {title} {{background-image="images/{img_name}" background-size=contain}}
 
 ::: {{.notes}}
 {notes}
